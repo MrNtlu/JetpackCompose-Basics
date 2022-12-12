@@ -15,16 +15,22 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.FabPosition
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.SnackbarDefaults.backgroundColor
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material3.BottomAppBarDefaults
-import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -280,16 +286,55 @@ fun MainScreen(
                 enter = scaleIn(),
                 exit = scaleOut(),
             ) {
-                FloatingActionButton(
-                    onClick = {
-                        sharedViewModel.fabOnClick.value.invoke()
-                    },
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Add,
-                        contentDescription = "Add FAB",
-                        tint = Color.White,
-                    )
+                if (navController.currentBackStackEntryAsState().value?.destination?.route == "home") {
+                    FloatingActionButton(
+                        onClick = {
+                            sharedViewModel.fabOnClick.value.invoke()
+                        },
+                        containerColor = MaterialTheme.colors.secondary,
+                        shape = RoundedCornerShape(16.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Add,
+                            contentDescription = "Add FAB",
+                            tint = Color.White,
+                        )
+                    }
+                } else if (navController.currentBackStackEntryAsState().value?.destination?.route == "settings") {
+                    Column(
+                        horizontalAlignment = Alignment.End,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        SmallFloatingActionButton(
+                            onClick = { sharedViewModel.smallFabOnClick.value.invoke() },
+                            containerColor = colors.secondaryVariant,
+                            shape = RoundedCornerShape(12.dp),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.MyLocation,
+                                contentDescription = "Location FAB",
+                                tint = Color.White,
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        ExtendedFloatingActionButton(
+                            text = {
+                                Text(text = "Navigate", color = Color.White)
+                            },
+                            icon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.NearMe,
+                                    contentDescription = "Navigate FAB",
+                                    tint = Color.White,
+                                )
+                            },
+                            onClick = { sharedViewModel.fabOnClick.value.invoke() },
+                            expanded = sharedViewModel.expandedFab.value,
+                            containerColor = colors.secondaryVariant,
+                        )
+                    }
                 }
             }
         },
