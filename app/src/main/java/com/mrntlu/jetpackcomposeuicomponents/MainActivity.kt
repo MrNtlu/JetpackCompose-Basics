@@ -49,6 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -57,6 +58,10 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.mrntlu.jetpackcomposeuicomponents.models.BottomNavItem
 import com.mrntlu.jetpackcomposeuicomponents.models.TabRowItem
 import com.mrntlu.jetpackcomposeuicomponents.ui.HomeScreen
@@ -64,6 +69,7 @@ import com.mrntlu.jetpackcomposeuicomponents.ui.TabScreen
 import com.mrntlu.jetpackcomposeuicomponents.ui.theme.JetpackComposeUIComponentsTheme
 import com.mrntlu.jetpackcomposeuicomponents.ui.theme.Purple500
 import com.mrntlu.jetpackcomposeuicomponents.utils.SearchWidgetState
+import com.mrntlu.jetpackcomposeuicomponents.utils.loadInterstitial
 import com.mrntlu.jetpackcomposeuicomponents.viewmodels.SharedViewModel
 import kotlinx.coroutines.launch
 
@@ -72,6 +78,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        MobileAds.initialize(this)
         setContent {
             JetpackComposeUIComponentsTheme {
                 navController = rememberNavController()
@@ -84,6 +92,8 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        loadInterstitial(this)
     }
 }
 
@@ -393,12 +403,25 @@ fun MainScreen(
             }
         },
         content = { contentPadding ->
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(contentPadding),
-                contentAlignment = Alignment.Center,
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                AndroidView(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    factory = { context ->
+                        AdView(context).apply {
+                            setAdSize(AdSize.BANNER)
+                            adUnitId = "ca-app-pub-3940256099942544/6300978111" //
+                            loadAd(AdRequest.Builder().build())
+                        }
+                    }
+                )
+
                 NavigationComposable(
                     navController = navController,
                     sharedViewModel = sharedViewModel,

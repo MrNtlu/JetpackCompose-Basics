@@ -65,4 +65,6 @@ dependencies {
     def accompanist_version = "0.28.0"
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version" // Pager
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version" // Pager Indicators
+
+    implementation 'com.google.android.gms:play-services-ads:21.3.0'
 }

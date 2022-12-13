@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -20,6 +21,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import com.mrntlu.jetpackcomposeuicomponents.models.TabRowItem
+import com.mrntlu.jetpackcomposeuicomponents.utils.showInterstitial
 import com.mrntlu.jetpackcomposeuicomponents.viewmodels.SharedViewModel
 import kotlinx.coroutines.launch
 
@@ -28,9 +30,12 @@ fun HomeScreen(
     navController: NavController,
     sharedViewModel: SharedViewModel,
 ) {
+    val context = LocalContext.current
+
     LaunchedEffect(key1 = Unit) {
         sharedViewModel.fabOnClick.value = {
             navController.navigate("add")
+            showInterstitial(context) {}
         }
     }
 
