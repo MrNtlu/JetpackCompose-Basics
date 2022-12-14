@@ -67,4 +67,15 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version" // Pager Indicators
 
     implementation 'com.google.android.gms:play-services-ads:21.3.0'
+
+    def paging_version = "3.1.1"
+    implementation "androidx.paging:paging-runtime:$paging_version"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha17"
+
+    def retrofit_version = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    def okhttp_version = "4.10.0"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
 }
